@@ -1,0 +1,109 @@
+---DISPLAY TRANSACTIONS WHERE THE AGE IS GREATER THE 40.
+SELECT*
+FROM RETAIL.PUBLIC.SALES
+WHERE age > 40;
+
+
+---DISPLAY TRANSACTIONS WHERE THE PRICE PER UNIT PER UNIT IS BETWEEN 100 AND 500.
+SELECT*
+FROM RETAIL.PUBLIC.SALES
+WHERE price_per_unit BETWEEN 100 AND 500;
+
+
+---DISPLAY TRANSACTIONS WHERE THE PRODUCT CATEGORY IS EITHER 'BEAUTY' OR 'ELECTRONICS'.
+SELECT*
+FROM RETAIL.PUBLIC.SALES
+WHERE product_category in ('beauty','electronics');
+
+
+---DISPLAY TRANSACTIONS WHERE THE PRODUCT CATEGORY IS NOT IN 'CLOTHING'.
+SELECT*
+FROM RETAIL.PUBLIC.SALES
+WHERE product_category != 'clothing';
+
+
+---TOTAL NUMBER OF TRANSACTIONS
+SELECT
+    count (transaction_id) as total_transactions
+FROM  RETAIL.PUBLIC.SALES;
+
+
+---AVERAGE AGE OF CUSTOMERS
+SELECT 
+    avg(age) as average_age
+FROM  RETAIL.PUBLIC.SALES;
+
+
+---TOTAL QUANTITY OF PRODUCTS SOLD.
+SELECT 
+    count (quantity) as total_quantity
+FROM  RETAIL.PUBLIC.SALES;
+
+
+---MAXIMUM TOTAL AMOUNT SPENT IN A SINGLE TRANSACTION.
+SELECT 
+    max (TOTAL_AMOUNT) AS max_total_amount
+FROM  RETAIL.PUBLIC.SALES
+GROUP BY transaction_id;
+
+
+---MINIMUM PRICE PER UNIT.
+SELECT 
+    min (price_per_unit) as min_price_per_unit
+FROM  RETAIL.PUBLIC.SALES;
+
+
+---NUMBER OF TRANSACTIONS PER PRODUCT CATEGORY.
+SELECT product_category,
+    count (transaction_id)as transaction_count
+FROM  RETAIL.PUBLIC.SALES
+GROUP BY product_category;
+
+
+--- TOTAL REVENUE PER GENDER.
+SELECT gender,
+    sum (total_amount) as total_revenue
+FROM RETAIL.PUBLIC.SALES
+GROUP BY GENDER;
+
+
+---AVERAGE PRICE PER UNIT PER PRODUCT CATEGORY.
+SELECT product_category,
+    avg (price_per_unit) as average_price
+FROM  RETAIL.PUBLIC.SALES
+GROUP BY product_category;
+
+
+--- TOTAL REVENUE PER PRODUCT CATEGORY WHERE TOTAL REVENUE IS GREATER THAN 10000.
+SELECT product_category,
+    sum(total_amount) as total_revenue
+FROM  RETAIL.PUBLIC.SALES
+GROUP BY product_category
+    HAVING sum(total_amount)>10000;
+
+
+---AVERAGE QUANTITY PER PRODUCT CATEGORY WHERE THE AVERAGE IS MORE THAN 2.
+SELECT product_category,
+    avg (quantity) as average_quantity
+FROM  RETAIL.PUBLIC.SALES
+GROUP BY product_category
+    HAVING avg (quantity)>2;
+
+
+---DISPLAY A COLUMN CALLED SPENDING_LEVEL THET SHOWS 'HIGH' IF TOTAL AMOUNT>1000,OTHERWISE 'LOW'.
+SELECT transaction_id, total_amount,
+CASE 
+    WHEN total_amount>1000 then 'high'
+    ELSE 'low'
+END AS spending_level
+FROM RETAIL.PUBLIC.SALES;
+
+
+---ADD A NEW COLUMN CALLED AGE_GROUP.
+SELECT customer_id, age,
+CASE
+    WHEN age<30 then 'youth'
+    WHEN age BETWEEN 30 AND 59 then 'adult'
+    WHEN age >=60 then 'senior'
+END AS age_group
+FROM RETAIL.PUBLIC.SALES;
